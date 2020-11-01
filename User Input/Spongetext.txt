@@ -1,0 +1,16 @@
+{{deleteTrigger 0}}
+
+{{$sponge := ""}}
+{{$charCount := 0}}
+{{$string := .StrippedMsg}}
+
+{{range $val := (split .StrippedMsg "")}}
+	{{- if (mod $charCount 2) 2}}
+		{{- $sponge = joinStr "" $sponge (upper $val)}}
+	{{else}}
+		{{- $sponge = joinStr "" $sponge (lower $val)}}
+	{{end}}
+{{$charCount = add $charCount 1}}
+{{end}}
+ 
+{{sendMessage nil (joinStr "" "**" .User.Username ": " "**" $sponge)}}
