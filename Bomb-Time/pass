@@ -1,0 +1,12 @@
+{{$args := parseArgs 1 "You need to mention a user!" (carg "user" "@Somebody")}}
+{{$status := dbGet 204255221017214977  "games_status"}}
+{{if not $status.Value}}
+	This game hasn't started yet!
+{{else if (targetHasRoleID (($args.Get 0).ID) ACTIVE_PLAYER_ROLE_ID)}}
+	{{dbSet 204255221017214977 "bomberman" (($args.Get 0).ID)}}
+	{{sendMessage nil (joinStr "" ($args.Get 0).Username " has the bomb now! Get rid of it!")}}
+	{{$expert := .User.ID}}
+	{{dbSet 204255221017214977 "expert" (toString $expert)}}
+{{else}}
+	{{sendMessage nil "This person is not playing!"}}
+{{end}}
