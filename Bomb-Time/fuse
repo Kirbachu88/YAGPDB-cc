@@ -1,0 +1,46 @@
+{{$arg := sdict }}
+{{define "cslice_del"}}
+{{$inp := .Get "input"}}{{$index := .Get "index"}}{{$len := len $inp}}
+{{if and (le $index $len) (gt $index 0)}}
+{{if gt $len 1}}
+    {{if eq $index 1}}{{.Set "res" (slice $inp 1)}}{{else if eq $index $len}}{{.Set "res" (slice $inp 0 (sub $len 1))}}{{else}}{{.Set "res" ((slice $inp 0 (sub $index 1)).AppendSlice (slice $inp $index))}}{{end}}
+{{else}}{{.Set "res" cslice}}{{end}}
+{{else}}{{.Set "res" "Out of Bounds Error"}}{{end}}
+{{end}}
+ 
+{{$timer := dbGet 204255221017214977  "timer"}}
+{{$fuse := toInt $timer.Value}}
+ 
+{{sendMessage nil (joinStr "" "Time's Ticking... " $fuse " Seconds Remaining")}}
+	{{range $i := (seq 0 $fuse)}}
+		{{$fuse = sub $fuse 1}} {{sleep 1}} {{sendMessage YAG_LOG_CHANNEL_ID $fuse}}
+			{{if eq $fuse 0}}
+				{{$bomberman := dbGet 204255221017214977 "bomberman"}}
+				{{$ghost := (toInt $bomberman.Value)}}
+				{{sendMessage nil (joinStr "" "<@" $ghost ">" " exploded!")}} 
+				{{takeRoleID $ghost ACTIVE_PLAYER_ROLE_ID}}
+				{{giveRoleID $ghost LOSING_PLAYER_ROLE_ID}}
+ 
+				{{$alive := (toInt (dbGet 204255221017214977 "games_count").Value)}}
+				{{dbSet 204255221017214977 "games_alive" (sub $alive 1)}}
+ 
+				{{$alive := (toInt (dbGet 204255221017214977 "games_alive").Value)}}
+				{{sendMessage nil (joinStr "" "Players remaining: " $alive)}}
+ 
+			{{end}}
+	{{end}}
+ 
+{{sleep 1}}
+{{$count := toInt (dbGet 204255221017214977 "games_alive").Value}}
+	{{if (eq $count 1)}}
+		{{$winner := (dbGet 204255221017214977 "expert").Value}}
+		{{sendMessage nil (joinStr "" "<@" $winner ">" " won! :trophy::tada:")}}
+    {{/* OPTIONAL: A role ID given to the winner of the game, for 1 day */}}
+		{{giveRoleID $winner WINNER_ROLE_ID}}
+		{{takeRoleID $winner WINNER_ROLE_ID 86400}}
+    
+    {{/* execCC ## of gameclean, channel ID of YAGPDB activity log */}}
+		{{execCC ## YAG_LOG_CHANNEL_ID 0 "nada"}}
+		{{dbSet 204255221017214977  "games_status" 0}}
+	{{else}} {{/* execCC of bombspawn */}} {{execCC ## GAME_CHANNEL_ID 0 "nada"}}
+{{end}}
