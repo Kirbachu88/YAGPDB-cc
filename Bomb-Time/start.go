@@ -36,12 +36,12 @@
 				{{else}}
 					{{dbSet 204255221017214977 "games_lobby" 0}}
           				{{/* SET THE CHANNEL ID YOU WANT THE GAME TO TAKE PLACE IN */}}
-					{{editMessage nil $id "Game has begun! Play at <#CHANNEL_ID>"}}
-					{{sendMessage nil "Game has begun! Play at <#CHANNEL_ID>"}}
+					{{editMessage nil $id "Game has begun! Play at <#GAME_CHANNEL_ID>"}}
+					{{sendMessage nil "Game has begun! Play at <#GAME_CHANNEL_ID>"}}
 					{{dbSet 204255221017214977  "games_status" 1}}
 					{{dbSet 204255221017214977  "games_alive" $count}}
           				{{/* CC ## for Bombspawn */}}
-					{{execCC ## CHANNEL_ID 5 "nada"}}
+					{{execCC ## GAME_CHANNEL_ID 5 "nada"}}
 				{{end}}
 		{{end}}
 {{end}}
