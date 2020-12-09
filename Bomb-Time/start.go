@@ -31,16 +31,16 @@
 					{{dbSet 204255221017214977  "games_status" 0}}
 					{{deleteMessage nil $id 0}}
 					{{sendMessage nil "Not enough players :("}}
-          {{/* CC ## to clear roles that were initially given to players in lobby */}} 
+          				{{/* CC ## to clear roles that were initially given to players in lobby */}} 
 					{{execCC ## nil 0 0}}
 				{{else}}
 					{{dbSet 204255221017214977 "games_lobby" 0}}
-          {{/* SET THE CHANNEL ID YOU WANT THE GAME TO TAKE PLACE IN */}}
+          				{{/* SET THE CHANNEL ID YOU WANT THE GAME TO TAKE PLACE IN */}}
 					{{editMessage nil $id "Game has begun! Play at <#CHANNEL_ID>"}}
 					{{sendMessage nil "Game has begun! Play at <#CHANNEL_ID>"}}
 					{{dbSet 204255221017214977  "games_status" 1}}
 					{{dbSet 204255221017214977  "games_alive" $count}}
-          {{/* CC ## for Bombspawn */}}
+          				{{/* CC ## for Bombspawn */}}
 					{{execCC ## CHANNEL_ID 5 "nada"}}
 				{{end}}
 		{{end}}
