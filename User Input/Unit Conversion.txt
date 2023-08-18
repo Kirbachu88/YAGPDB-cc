@@ -1,0 +1,104 @@
+{{/* Trigger type regex */}}
+{{/* ^\-(inches|in|centimeters|cm|feet|ft|yards|yd|meters|m|miles|mi|kilometers|km|ounces|oz|grams|g|pounds|lbs|tons|tn|kilograms|kg|mph|kmh|fahrenheit|ftc|celsius|ctf)[[:space:]] */}}
+
+{{$args := parseArgs 1 "Syntax is <original unit> <amount>"
+	(carg "float" "the measurement of your unit")}}
+{{$original := $args.Get 0}}
+{{$new := 0.0}}
+{{$unit := lower (slice .Cmd 1 (len (lower .Cmd)))}}
+{{$message := ""}}
+
+{{/* something to blah /*}}
+{{/* else if eq $unit "something" "smtn" */}}
+{{/* $new := SECRET FORMULURR */}}
+{{/* $message = blabhlabhalbh */}}
+
+{{if eq 1 2}}
+{{/* Makes copy and pasting the template easier */}}
+
+{{/* LENGTH */}}
+{{/* in to cm */}}
+{{else if eq $unit "inches" "in"}}
+{{$new = div (round (mult (mult $original 2.54 ) 100)) 100}}
+{{$message = (joinStr "" "**" ($original) "in** is " "**" ($new) "cm**")}}
+
+{{/* cm to in */}}
+{{else if eq $unit "centimeters" "cm"}}
+{{$new = div (round (mult (mult $original 0.394 ) 100)) 100}}
+{{$message = (joinStr "" "**" ($original) "cm** is " "**" ($new) "in**")}}
+
+{{/* ft to meters */}}
+{{else if eq $unit "feet" "ft"}}
+{{$new = div (round (mult (mult $original 0.3048 ) 100)) 100}}
+{{$message = (joinStr "" "**" ($original) "ft** is " "**" ($new) "m**")}}
+
+{{/* meters to ft */}}
+{{else if eq $unit "meters" "m"}}
+{{$new = div (round (mult (mult $original 3.281 ) 100)) 100}}
+{{$message = (joinStr "" "**" ($original) "m** is " "**" ($new) "ft**")}}
+
+{{/* yards to meters */}}
+{{else if eq $unit "yards" "yd"}}
+{{$new = div (round (mult (mult $original 0.9144 ) 100)) 100}}
+{{$message = (joinStr "" "**" ($original) " yard(s)** is " "**" ($new) "m**")}}
+
+{{/* miles to kilometers */}}
+{{else if eq $unit "miles" "mi"}}
+{{$new = div (round (mult (mult $original 1.60934 ) 100)) 100}}
+{{$message = (joinStr "" "**" ($original) "mi** is " "**" ($new) "km**")}}
+
+{{/* kilometers to miles */}}
+{{else if eq $unit "kilometers" "km"}}
+{{$new = div (round (mult (mult $original 0.6214 ) 100)) 100}}
+{{$message = (joinStr "" "**" ($original) "km** is " "**" ($new) "mi**")}}
+
+{{/* WEIGHT */}}
+{{/* oz to grams */}}
+{{else if eq $unit "ounces" "oz"}}
+{{$new = div (round (mult (mult $original 28.35 ) 100)) 100}}
+{{$message = (joinStr "" "**" ($original) "oz** is " "**" ($new) "g**")}}
+
+{{/* grams to oz */}}
+{{else if eq $unit "grams" "g"}}
+{{$new = div (round (mult (mult $original 0.035274 ) 100)) 100}}
+{{$message = (joinStr "" "**" ($original) "g** is " "**" ($new) "oz**")}}
+
+{{/* lbs to kg */}}
+{{else if eq $unit "pounds" "lbs"}}
+{{$new = div (round (mult (mult $original 0.4536 ) 100)) 100}}
+{{$message = (joinStr "" "**" ($original) "lbs** is " "**" ($new) "kg**")}}
+
+{{/* tons to kg */}}
+{{else if eq $unit "tons" "tn"}}
+{{$new = div (round (mult (mult $original 907.2 ) 100)) 100}}
+{{$message = (joinStr "" "**" ($original) " ton(s)** is " "**" ($new) "kg**")}}
+
+{{/* kg to lbs */}}
+{{else if eq $unit "kilograms" "kg"}}
+{{$new = div (round (mult (mult $original 2.205 ) 100)) 100}}
+{{$message = (joinStr "" "**" ($original) "kg** is " "**" ($new) "lbs**")}}
+
+{{/* SPEED */}}
+{{/* mph to kmh */}}
+{{else if eq $unit "mph"}}
+{{$new = div (round (mult (mult $original 1.60934 ) 100)) 100}}
+{{$message = (joinStr "" "**" ($original) "mph** is " "**" ($new) "km/h**")}}
+
+{{/* kmh to mph */}}
+{{else if eq $unit "kmh"}}
+{{$new = div (round (mult (mult $original 0.6214 ) 100)) 100}}
+{{$message = (joinStr "" "**" ($original) "km/h** is " "**" ($new) "mph**")}}
+
+{{/* TEMPERATURE */}}
+{{/* FTC */}}
+{{else if eq $unit "fahrenheit" "ftc"}}
+{{$new = div (round (mult (mult (sub $original 32) 0.55556) 100)) 100}}
+{{$message = (joinStr "" "**" ($original) "°F** is " "**" ($new) "°C**")}}
+
+{{/* CTF */}}
+{{else if eq $unit "celsius" "ctf"}}
+{{$new = div (round (mult (add (mult $original 1.8) 32) 100)) 100}}
+{{$message = (joinStr "" "**" ($original) "°C** is " "**" ($new) "°F**")}}
+
+{{end}}
+{{sendMessage nil $message}}
