@@ -6,26 +6,31 @@
 {{$original := $args.Get 0}}
 {{$new := 0.0}}
 {{$unit := lower (slice .Cmd 1 (len (lower .Cmd)))}}
-{{$message := ""}}
+{{$message := (joinStr "" "`" $original " " $unit "`")}}
 
-{{/* something to blah /*}}
+{{/* something to blah */}}
 {{/* else if eq $unit "something" "smtn" */}}
-{{/* $new := SECRET FORMULURR */}}
-{{/* $message = blabhlabhalbh */}}
+{{/* $new = div (round (mult ( SECRET FORMULURR ) 100)) 100 */}}
+{{/* $message = (joinStr "" "**" ($original) "smtn** is " "**" ($new) "blah**") */}}
 
 {{if eq 1 2}}
 {{/* Makes copy and pasting the template easier */}}
 
 {{/* LENGTH */}}
-{{/* in to cm */}}
+{{/* inches to cm */}}
 {{else if eq $unit "inches" "in"}}
 {{$new = div (round (mult (mult $original 2.54 ) 100)) 100}}
 {{$message = (joinStr "" "**" ($original) "in** is " "**" ($new) "cm**")}}
 
-{{/* cm to in */}}
+{{/* cm to inches */}}
 {{else if eq $unit "centimeters" "cm"}}
 {{$new = div (round (mult (mult $original 0.394 ) 100)) 100}}
 {{$message = (joinStr "" "**" ($original) "cm** is " "**" ($new) "in**")}}
+
+{{/* mm to inches */}}
+{{else if eq $unit "millimeter" "mm"}}
+{{$new = div (round (mult (mult $original 0.0394 ) 100)) 100}}
+{{$message = (joinStr "" "**" ($original) "mm** is " "**" ($new) "in**")}}
 
 {{/* ft to meters */}}
 {{else if eq $unit "feet" "ft"}}
