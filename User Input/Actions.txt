@@ -1,0 +1,47 @@
+{{/* Trigger type regex */}}
+{{/* ^\-(hug|poke|slap|pat|highfive|boop|bonk|give) */}}
+
+{{/* This simulates Dyno commands since that bot goes down quite often, the downside is that it doesn't detect users from partial usernames, and pings are necessary afaik. */}}
+
+{{$args := parseArgs 1 "Syntax is <command> <user ID or mention> [optional stuff]"
+    (carg "member" "this parses a mention/ID and produces the member struct" )
+    (carg "string" "some optional stuff" )}}
+{{$target := $args.Get 0}}
+{{$optional := ""}}
+{{if $args.Get 1}}
+	{{$optional = $args.Get 1}}
+{{end}}
+
+{{/* Hug */}}
+{{if eq (lower .Cmd) "-hug"}}
+	{{sendMessage nil (joinStr "" (.User.Mention) " gave " ($target.User.Mention) " a hug! 🥰")}}
+
+{{/* Poke */}}
+{{else if eq (lower .Cmd) "-poke"}}
+	{{sendMessage nil (joinStr "" (.User.Mention) " poked " ($target.User.Mention) " 👀")}}
+
+{{/* Pat */}}
+{{else if eq (lower .Cmd) "-pat"}}
+	{{sendMessage nil (joinStr "" (.User.Mention) " patted " ($target.User.Mention) " 🥰")}}
+
+{{/* Slap */}}
+{{else if eq (lower .Cmd) "-slap"}}
+	{{sendMessage nil (joinStr "" (.User.Mention) " slapped " ($target.User.Mention) " :smiling_face_with_tear:")}}
+
+{{/* Highfive */}}
+{{else if eq (lower .Cmd) "-highfive"}}
+	{{sendMessage nil (joinStr "" (.User.Mention) " gave " ($target.User.Mention) " a " (adjective) " highfive!")}}
+
+{{/* Boop */}}
+{{else if eq (lower .Cmd) "-boop"}}
+	{{sendMessage nil (joinStr "" (.User.Mention) " booped " ($target.User.Mention) "!")}}
+
+{{/* Bonk */}}
+{{else if eq (lower .Cmd) "-bonk"}}
+	{{sendMessage nil (joinStr "" (.User.Mention) " [bonked](https://tenor.com/view/doge-bonk-chew-mega-bonk-hitting-gif-26060616) " ($target.User.Mention) "!")}}
+
+{{/* Give */}}
+{{else if eq (lower .Cmd) "-give"}}
+	{{sendMessage nil (joinStr "" (.User.Mention) " has given " ($target.User.Mention) " " ($optional) "!")}}
+
+{{end}}
