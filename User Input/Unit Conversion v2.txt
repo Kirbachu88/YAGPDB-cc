@@ -1,9 +1,9 @@
 {{/* Trigger type regex */}}
-{{/* ^\-\d+(?:[.,]\d+)?[\s]?(inches|in|centimeters|cm|millimeters|mm|feet|ft|yards|yd|meters|m|miles|mi|kilometers|km|ounces|oz|grams|g|pounds|lbs|ton|tons|tn|kilograms|kg|mph|kmh|fahrenheit|f|celsius|c)$ */}}
+{{/* ^\-\-?\d+(?:[.,]\d+)?[\s]?(inches|in|centimeters|cm|millimeters|mm|feet|ft|yards|yd|meters|m|miles|mi|kilometers|km|ounces|oz|grams|g|pounds|lbs|ton|tons|tn|kilograms|kg|mph|kmh|fahrenheit|f|celsius|c)$ */}}
 
-{{$msg := lower (.Cmd)}}
+{{$msg := reReplace "^\\-" (lower (.Cmd)) ""}}
 {{$unit := reFind "(inches|in|centimeters|cm|millimeters|mm|feet|ft|yards|yd|meters|m|miles|mi|kilometers|km|ounces|oz|grams|g|pounds|lbs|ton|tons|tn|kilograms|kg|mph|kmh|fahrenheit|f|celsius|c)$" $msg }}
-{{$original := toFloat (reFind "\\d+(?:[.,]\\d+)?" $msg)}}
+{{$original := toFloat (reFind "\\-?\\d+(?:[.,]\\d+)?" $msg)}}
 {{$new := 0.0}}
 {{$message := (joinStr "" "`" $original " " $unit "`")}}
 
